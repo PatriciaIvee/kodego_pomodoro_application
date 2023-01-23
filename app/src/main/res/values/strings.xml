@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Pomodoro Application</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="today_s_task">Today\'s Task</string>
+    <string name="see_all_completed_tasks">See All Completed Tasks</string>
+    <string name="completed_tasks">Completed Tasks</string>
+    <string name="tasks">Tasks</string>
+</resources>

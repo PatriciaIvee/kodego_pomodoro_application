@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.SettingsFragment"
+    android:layout_margin="@dimen/layout_margin"
+    android:background="@color/white">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/settings_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textSize="@dimen/title_text_size"
+            android:fontFamily="@font/nunito_extrabold"
+            android:padding="@dimen/layout_margin"
+            android:layout_marginVertical="@dimen/large_margin"
+            android:layout_marginHorizontal="@dimen/medium_margin"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/teal_700"
+            android:layout_marginHorizontal="@dimen/medium_margin"
+            android:layout_marginVertical="@dimen/small_margin"
+            app:cardCornerRadius="8dp"
+            >
+            <TextView
+                android:id="@+id/alarm_sound_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Alarm Sound"
+                android:textSize="@dimen/title_text_size"
+                android:fontFamily="@font/nunito_extrabold"
+                android:padding="@dimen/medium_padding"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/alarm_sound_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:spinnerMode="dropdown"
+                style="@style/Widget.AppCompat.Spinner.DropDown"
+                />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/teal_700"
+            android:layout_marginHorizontal="@dimen/medium_margin"
+            android:layout_marginVertical="@dimen/small_margin"
+            app:cardCornerRadius="8dp"
+            >
+            <TextView
+                android:id="@+id/ticking_sound_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ticking Sound"
+                android:textSize="@dimen/title_text_size"
+                android:fontFamily="@font/nunito_extrabold"
+                android:padding="@dimen/medium_padding"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/ticking_sound_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:spinnerMode="dropdown"
+                style="@style/Widget.AppCompat.Spinner.DropDown"
+                android:gravity=""/>
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/ticking_sound_seek_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:padding="@dimen/medium_padding"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/teal_700"
+            android:layout_marginHorizontal="@dimen/medium_margin"
+            android:layout_marginVertical="@dimen/small_margin"
+            app:cardCornerRadius="8dp"
+            >
+        <TextView
+            android:id="@+id/vibrate_on_alarm_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vibrate On Alarm"
+            android:textSize="@dimen/title_text_size"
+            android:fontFamily="@font/nunito_extrabold"
+            android:padding="@dimen/medium_padding"/>
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/alarm_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:spinnerMode="dropdown"
+            style="@style/Widget.AppCompat.Spinner.DropDown"
+            />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/teal_700"
+            android:layout_marginHorizontal="@dimen/medium_margin"
+            android:layout_marginVertical="@dimen/small_margin"
+            app:cardCornerRadius="8dp"
+            >
+            <TextView
+                android:id="@+id/notification_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Notification"
+                android:textSize="@dimen/title_text_size"
+                android:fontFamily="@font/nunito_extrabold"
+                android:padding="@dimen/medium_padding"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/notification_spinner_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:spinnerMode="dropdown"
+                style="@style/Widget.AppCompat.Spinner.DropDown"
+                />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/notification_spinner_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:spinnerMode="dropdown"
+                style="@style/Widget.AppCompat.Spinner.DropDown"
+                />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Theme"
+            android:textSize="@dimen/title_text_size"
+            android:fontFamily="@font/nunito_extrabold"
+            android:padding="@dimen/medium_padding"/>
+
+    </LinearLayout>
+
+</ScrollView>
