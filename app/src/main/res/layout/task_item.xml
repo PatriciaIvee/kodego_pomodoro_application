@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/small_margin"
+    app:cardBackgroundColor="@color/purple_500"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/small_margin"
+        >
+        <!--        weightSum creates columns-->
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/task_name"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:text="Task"
+            app:layout_constraintEnd_toStartOf="@id/delete_row_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/task_status"
+            app:layout_constraintTop_toBottomOf="@id/task_name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/delete_row_button"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="task status"
+            android:textSize="18sp"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/task_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/delete_row_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="@string/x"
+
+            android:textSize="11sp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

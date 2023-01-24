@@ -8,15 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import ph.kodego.leones.patricia.ivee.pomodoroapplication.R
 
 class HorizontalRecyclerAdapter(private val horizontalRecyclerDataList: ArrayList<String>) :
-    RecyclerView.Adapter<HorizontalRecyclerAdapter.CarouselItemViewHolder>() {
-    class CarouselItemViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    RecyclerView.Adapter<HorizontalRecyclerAdapter.HorizontalRecyclerItemViewHolder>() {
+    class HorizontalRecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HorizontalRecyclerItemViewHolder {
         val viewHolder = LayoutInflater.from(parent.context).inflate(R.layout.horizontal_recycler_item, parent, false)
-        return CarouselItemViewHolder(viewHolder)
+        return HorizontalRecyclerItemViewHolder(viewHolder)
     }
 
-    override fun onBindViewHolder(holder: CarouselItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HorizontalRecyclerItemViewHolder, position: Int) {
         val textView = holder.itemView.findViewById<TextView>(R.id.textview)
         textView.text = horizontalRecyclerDataList[position]
     }
