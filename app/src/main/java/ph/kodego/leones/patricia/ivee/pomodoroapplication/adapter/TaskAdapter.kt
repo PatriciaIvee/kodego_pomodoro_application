@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ph.kodego.leones.patricia.ivee.pomodoroapplication.databinding.TaskItemBinding
 import ph.kodego.leones.patricia.ivee.pomodoroapplication.model.Task
+import java.util.concurrent.TimeUnit
 
 class TaskAdapter(var tasks: ArrayList<Task>)
     : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
@@ -29,14 +30,25 @@ class TaskAdapter(var tasks: ArrayList<Task>)
 
     }
 
+    fun editTaskStatus(task: Task){
+        task.status = task.status
+    }
+
     fun completedTask(task: Task){
-        if (task.status == "Completed"){
-            TODO()
-        }
+        task.status = "Completed"
+
+        var completedTasks: ArrayList<Task> = ArrayList()
+        completedTasks.add(task)
     }
 
     override fun getItemCount(): Int {
         return tasks.size
+    }
+
+    fun setTaskTimer(){
+
+//        var focusTime = TimeUnit.MINUTES.toMillis()
+
     }
 
     override fun onCreateViewHolder(

@@ -7,20 +7,28 @@
     android:layout_height="match_parent"
     tools:context=".ui.task.TaskFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <!-- TODO: Update blank fragment layout -->
         <TextView
+            android:id="@+id/set_task_text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SET TASK"
             android:textSize="45sp" />
 
         <TextView
+            android:id="@+id/text_question"
+            app:layout_constraintTop_toBottomOf="@id/set_task_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="What do you need to do for today?"
@@ -32,6 +40,9 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/task_name_layout"
+            app:layout_constraintTop_toBottomOf="@id/text_question"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,6 +61,9 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/task_description_layout"
+            app:layout_constraintTop_toBottomOf="@id/task_name_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,14 +82,19 @@
 
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            app:layout_constraintTop_toBottomOf="@id/task_description_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/teal_700"
             android:layout_marginStart="32dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="32dp">
+            android:layout_marginEnd="32dp"
+            >
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/card_view"
+                android:id="@+id/card_view_constraint"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -117,55 +136,69 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/focus_time_layout"
+            app:layout_constraintTop_toBottomOf="@id/card_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp">
+            android:layout_marginEnd="32dp"
+            >
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/focus_time_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Focus time in minutes"
-                android:inputType="number" />
+                 />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/short_break_layout"
+            app:layout_constraintTop_toBottomOf="@id/focus_time_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp">
+            android:layout_marginEnd="32dp"
+            >
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/short_break_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Short Break in minutes"
-                android:inputType="number" />
+                 />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/long_break_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintTop_toBottomOf="@id/short_break_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp">
+            android:layout_marginEnd="32dp"
 
-            <androidx.appcompat.widget.AppCompatEditText
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/long_break_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Long Break in minutes"
-                android:inputType="number" />
+
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -176,20 +209,27 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="32dp"
-            android:orientation="vertical"
-            android:layout_gravity="center" />
+            android:isScrollContainer="false"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/long_break_layout" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/save_and_start"
+            app:layout_constraintTop_toBottomOf="@id/interval_number_picker"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:text="Start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="152dp"
             android:layout_gravity="center"
             />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

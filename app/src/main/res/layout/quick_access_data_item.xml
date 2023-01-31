@@ -24,9 +24,10 @@
             android:layout_marginHorizontal="@dimen/small_margin"
             android:layout_marginVertical="12dp"
             android:lines="2"
-            android:text=""
+            android:text="text"
             android:textAlignment="textEnd"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

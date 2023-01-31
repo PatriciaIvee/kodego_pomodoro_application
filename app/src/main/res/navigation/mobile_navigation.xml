@@ -15,13 +15,20 @@
         android:id="@+id/navigation_task"
         android:name="ph.kodego.leones.patricia.ivee.pomodoroapplication.ui.task.TaskFragment"
         android:label="@string/task"
-        tools:layout="@layout/fragment_task" />
+        tools:layout="@layout/fragment_task">
+        <action
+            android:id="@+id/action_taskfragment_to_timerfragment"
+            app:destination="@id/navigation_timer"/>
+
+    </fragment>
+
+
 
     <fragment
         android:id="@+id/navigation_timer"
         android:name="ph.kodego.leones.patricia.ivee.pomodoroapplication.ui.timer.TimerFragment"
         android:label="@string/timer"
-        tools:layout="@layout/fragment_timer" />
+        tools:layout="@layout/fragment_timer"/>
 
     <fragment
         android:id="@+id/navigation_settings"
