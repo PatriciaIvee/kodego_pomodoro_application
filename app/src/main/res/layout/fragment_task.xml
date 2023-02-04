@@ -203,7 +203,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <NumberPicker
-            android:id="@+id/interval_number_picker"
+            android:id="@+id/repetition_number_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -217,7 +217,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/save_and_start"
-            app:layout_constraintTop_toBottomOf="@id/interval_number_picker"
+            app:layout_constraintTop_toBottomOf="@id/repetition_number_picker"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

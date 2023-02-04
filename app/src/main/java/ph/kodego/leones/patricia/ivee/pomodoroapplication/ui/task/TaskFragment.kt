@@ -1,6 +1,5 @@
 package ph.kodego.leones.patricia.ivee.pomodoroapplication.ui.task
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,12 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import ph.kodego.leones.patricia.ivee.pomodoroapplication.R
 import ph.kodego.leones.patricia.ivee.pomodoroapplication.databinding.FragmentTaskBinding
-import ph.kodego.leones.patricia.ivee.pomodoroapplication.pomodoro_code.PomodoroCodeFeedActivity
-import ph.kodego.leones.patricia.ivee.pomodoroapplication.ui.timer.TimerFragment
 
 class TaskFragment : Fragment() {
 
@@ -31,7 +27,7 @@ class TaskFragment : Fragment() {
 //            ViewModelProvider(this).get(TaskViewModel::class.java)
 
         _binding = FragmentTaskBinding.inflate(inflater, container, false)
-        binding.intervalNumberPicker.apply {
+        binding.repetitionNumberPicker.apply {
             minValue = 1
             maxValue = 50
 //
@@ -48,25 +44,25 @@ class TaskFragment : Fragment() {
             val focusTime = binding.focusTimeInput.text.toString()
             val shortBreak = binding.shortBreakInput.text.toString()
             val longBreak = binding.longBreakInput.text.toString()
-            val interval = binding.intervalNumberPicker.value.toString()
+            val repetition = binding.repetitionNumberPicker.value.toString()
 
-            if (focusTime.isNotEmpty() && shortBreak.isNotEmpty() && longBreak.isNotEmpty() && interval.isNotEmpty()){
+            if (focusTime.isNotEmpty() && shortBreak.isNotEmpty() && longBreak.isNotEmpty() && repetition.isNotEmpty()){
 
                 //                val intent = Intent(this,TimerFragment ::class.java)
                 var bundle = Bundle()
                 bundle.putString("taskName", taskName)
-                bundle.putString("focusTime",focusTime.toString())
-                bundle.putString("shortBreak",shortBreak.toString())
-                bundle.putString("longBreak",longBreak.toString())
-                bundle.putString("interval",interval.toString())
+                bundle.putInt("focusTime",focusTime.toInt())
+                bundle.putInt("shortBreak",shortBreak.toInt())
+                bundle.putInt("longBreak",longBreak.toInt())
+                bundle.putInt("repetition",repetition.toInt())
 
-                val fragmentTimer = TimerFragment()
+//                val fragmentTimer = TimerFragment()
 //                fragmentTimer.arguments = bundle
                 Log.d(LOGINFO,"taskName value TO PASS is: $taskName")
                 Log.d(LOGINFO,"focusTime value TO PASS is: $focusTime")
                 Log.d(LOGINFO,"shortBreak value TO PASS is: $shortBreak")
                 Log.d(LOGINFO,"longBreak value TO PASS is: $longBreak")
-                Log.d(LOGINFO,"interval value TO PASS is: $interval")
+                Log.d(LOGINFO,"repetition value TO PASS is: $repetition")
 
                 findNavController().navigate(R.id.action_taskfragment_to_timerfragment,bundle)
 

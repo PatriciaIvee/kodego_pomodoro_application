@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment"
-    android:background="@color/teal_700"
+    android:background="@drawable/background_gradient_animation"
     android:scrollbars="none"
+    android:id="@+id/scrollView"
 
     >
     <LinearLayout

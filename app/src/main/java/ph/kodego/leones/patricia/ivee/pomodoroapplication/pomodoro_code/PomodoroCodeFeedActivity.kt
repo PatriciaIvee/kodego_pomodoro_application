@@ -18,7 +18,7 @@ class PomodoroCodeFeedActivity : AppCompatActivity() {
     private var studyTimer: CountDownTimer? = null
     private var breakTimer: CountDownTimer? = null
 
-    private var mRound = 1
+    private var timeFinished = 1 // counts the completed time(focus time, break time, etc)
 
     private var isStudy = true
 
@@ -34,7 +34,7 @@ class PomodoroCodeFeedActivity : AppCompatActivity() {
         breakMinute = intent.getIntExtra("break", 0) * 60 * 1000
         roundCount = intent.getIntExtra("round", 0)
         // Set Rounds Text
-        binding.tvRound.text = "$mRound/$roundCount"
+        binding.tvRound.text = "$timeFinished/$roundCount"
         //Start Timer
         setRestTimer()
         // Reset Button
@@ -48,10 +48,12 @@ class PomodoroCodeFeedActivity : AppCompatActivity() {
         binding.tvStatus.text = "Get Ready"
         binding.progressBar.progress = 0
         binding.progressBar.max = 10
+
+
         restTimer = object : CountDownTimer(10500,1000) {
-            override fun onTick(p0: Long) {
-                binding.progressBar.progress = (p0 / 1000).toInt()
-                binding.tvTimer.text = (p0 / 1000).toString()
+            override fun onTick(remainingTime: Long) {
+                binding.progressBar.progress = (remainingTime / 1000).toInt()
+                binding.tvTimer.text = (remainingTime / 1000).toString()
             }
             override fun onFinish() {
                 mp?.reset()
@@ -72,10 +74,10 @@ class PomodoroCodeFeedActivity : AppCompatActivity() {
                 binding.tvTimer.text = createTimeLabels((p0 / 1000).toInt())
             }
             override fun onFinish() {
-                if(mRound < roundCount!!){
+                if(timeFinished < roundCount!!){
                     isStudy = false
                     setRestTimer()
-                    mRound++
+                    timeFinished++
                 }else{
                     clearAttribute()
                     binding.tvStatus.text = "You have finish your rounds :)"
@@ -100,7 +102,7 @@ class PomodoroCodeFeedActivity : AppCompatActivity() {
     }
     // Prepare Screen for Study Timer
     private fun setupStudyView() {
-        binding.tvRound.text = "$mRound/$roundCount"
+        binding.tvRound.text = "$timeFinished/$roundCount"
         binding.tvStatus.text = "Study Time"
         binding.progressBar.max = studyMinute!!/1000
 
@@ -137,8 +139,8 @@ class PomodoroCodeFeedActivity : AppCompatActivity() {
         binding.ivStop.setImageResource(R.drawable.ic_play)
         binding.progressBar.progress = 0
         binding.tvTimer.text = "0"
-        mRound = 1
-        binding.tvRound.text = "$mRound/$roundCount"
+        timeFinished = 1
+        binding.tvRound.text = "$timeFinished/$roundCount"
         restTimer?.cancel()
         studyTimer?.cancel()
         breakTimer?.cancel()

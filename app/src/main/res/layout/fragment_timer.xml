@@ -12,14 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/nunito_extrabold"
+        android:text="@string/task_name"
         android:textAlignment="center"
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/task_name"/>
+        app:layout_constraintBottom_toTopOf="@id/text_task_status"/>
+
     <TextView
         android:id="@+id/text_task_status"
         android:layout_width="match_parent"
@@ -27,12 +30,42 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/nunito_extrabold"
+        android:text="@string/task_status"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_task_name"
-        android:text="@string/task_status"/>
+        app:layout_constraintBottom_toTopOf="@id/text_view_repetition"/>
+
+    <TextView
+        android:id="@+id/text_view_repetition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/nunito_extrabold"
+        android:text="@string/repetition"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_task_status"
+        app:layout_constraintBottom_toTopOf="@id/image"/>
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/image"
+        app:layout_constraintTop_toBottomOf="@id/text_view_repetition"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_timer"
+        android:layout_marginTop="@dimen/small_margin"
+        app:layout_constraintBottom_toTopOf="@id/text_timer"/>
 
     <TextView
         android:id="@+id/text_timer"
@@ -41,16 +74,17 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/nunito_extrabold"
+        android:text="@string/_00_00"
         android:textAlignment="center"
-        android:textSize="60sp"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_task_status"
-        android:text="@string/_00_00"
-        />
+        app:layout_constraintTop_toBottomOf="@id/image"
+        app:layout_constraintBottom_toTopOf="@id/progress_bar_timer"/>
 
     <ProgressBar
-        android:id="@+id/progress_bar"
+        android:id="@+id/progress_bar_timer"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,16 +92,45 @@
         android:layout_marginHorizontal="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_timer" />
+        app:layout_constraintTop_toBottomOf="@id/text_timer"
+        app:layout_constraintBottom_toTopOf="@id/progress_bar_repetition"/>
+
+
+    <ProgressBar
+        android:id="@+id/progress_bar_repetition"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_margin"
+        android:layout_marginHorizontal="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progress_bar_timer"
+        app:layout_constraintBottom_toTopOf="@id/btn_play"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/large_margin"
-        app:layout_constraintTop_toBottomOf="@id/progress_bar"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="100dp"
+        android:text="Play"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Play"/>
+        app:layout_constraintHorizontal_bias="0.253"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progress_bar_repetition" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_margin"
+        android:layout_marginBottom="100dp"
+        android:text="Pause"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_play"
+        app:layout_constraintTop_toBottomOf="@id/progress_bar_repetition" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
