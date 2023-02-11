@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ph.kodego.leones.patricia.ivee.pomodoroapplication.R
-
+//TODO: Make focus time , tasks completed and there's another one for horizontal recycler
 class HorizontalRecyclerAdapter(private val horizontalRecyclerDataList: ArrayList<String>) :
     RecyclerView.Adapter<HorizontalRecyclerAdapter.HorizontalRecyclerItemViewHolder>() {
     class HorizontalRecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view)

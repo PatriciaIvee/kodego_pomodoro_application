@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,16 +14,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PomodoroApplication"
         tools:targetApi="31">
+        <receiver
+            android:name="ph.kodego.leones.patricia.ivee.pomodoroapplication.ui.timer.TimerNotificationActionReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="Stop"/>
+                <action android:name="Pause"/>
+                <action android:name="Resume"/>
+                <action android:name="Start"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="ph.kodego.leones.patricia.ivee.pomodoroapplication.ui.timer.TimerExpiredReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
         <activity
             android:name=".MasterActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize|adjustPan"
-            android:label="@string/title_activity_master">
+            android:label="@string/title_activity_master"
+            android:windowSoftInputMode="adjustResize|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
