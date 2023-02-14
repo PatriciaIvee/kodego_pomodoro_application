@@ -39,7 +39,7 @@ class TaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.saveAndStart.setOnClickListener{
+        binding.btnSaveAndStart.setOnClickListener{
             val taskName = binding.taskNameInput.text.toString()
             val focusTime = binding.focusTimeInput.text.toString()
             val shortBreak = binding.shortBreakInput.text.toString()

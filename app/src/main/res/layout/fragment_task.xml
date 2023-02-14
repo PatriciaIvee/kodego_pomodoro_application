@@ -14,30 +14,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:id="@+id/set_task_text"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SET TASK"
-            android:textSize="45sp" />
-
         <TextView
             android:id="@+id/text_question"
-            app:layout_constraintTop_toBottomOf="@id/set_task_text"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="What do you need to do for today?"
-            android:textSize="15sp"
             android:textAlignment="center"
             android:layout_marginStart="32dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="32dp"/>
+            android:layout_marginEnd="32dp"
+            android:textSize="14sp"
+            android:fontFamily="@font/press_start_2p"
+            android:textColor="@color/apple_theme_dark_green"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/task_name_layout"
@@ -56,7 +47,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="TaskName"
-                android:inputType="text" />
+                android:inputType="text"
+                android:lines="1"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,7 +81,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/teal_700"
+            app:cardBackgroundColor="@color/apple_theme_mid_green"
             android:layout_marginStart="32dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="32dp"
@@ -203,6 +195,21 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/text_repetition"
+            app:layout_constraintTop_toBottomOf="@id/long_break_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Repetitions"
+            android:textAlignment="center"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginEnd="32dp"
+            android:textSize="14sp"
+            android:textColor="@color/apple_theme_dark_green"
+            android:fontFamily="@font/press_start_2p"/>
         <NumberPicker
             android:id="@+id/repetition_number_picker"
             android:layout_width="wrap_content"
@@ -214,11 +221,38 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/long_break_layout" />
+            app:layout_constraintTop_toBottomOf="@id/text_repetition" />
+
+        <TextView
+            android:id="@+id/text_long_break_repeat"
+            app:layout_constraintTop_toBottomOf="@id/repetition_number_picker"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/long_break_spinner"
+            app:layout_constraintBottom_toTopOf="@id/btn_save_and_start"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Play Long Break Every?"
+            android:textAlignment="center"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/repetition_number_picker"
+            app:layout_constraintStart_toEndOf="@id/text_long_break_repeat"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:id="@+id/long_break_spinner"/>
+
+<!--        app:layout_constraintBottom_toTopOf="@id/btn_save_and_start"-->
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/save_and_start"
-            app:layout_constraintTop_toBottomOf="@id/repetition_number_picker"
+            android:id="@+id/btn_save_and_start"
+            app:layout_constraintTop_toBottomOf="@id/text_long_break_repeat"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

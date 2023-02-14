@@ -1,4 +1,4 @@
-package ph.kodego.leones.patricia.ivee.pomodoroapplication.ui.timer
+package ph.kodego.leones.patricia.ivee.extra_module
 
 class AppConstants {
     companion object{

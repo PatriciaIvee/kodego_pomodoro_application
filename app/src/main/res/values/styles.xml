@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyTextAppearanceHeading1">
+        <item name="android:fontFamily">@font/press_start_2p</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/apple_theme_red</item>
+    </style>
+
+    <style name="MyTextAppearanceType2">
+        <item name="android:fontFamily">@font/press_start_2p</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="MyAppTextAppearance" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/vt323</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+</resources>

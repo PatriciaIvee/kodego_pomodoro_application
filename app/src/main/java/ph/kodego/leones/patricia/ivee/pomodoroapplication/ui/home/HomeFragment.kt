@@ -33,10 +33,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
 
-        val gradientAnimation = binding.scrollView.background as AnimationDrawable
-        gradientAnimation.setEnterFadeDuration(10)
-        gradientAnimation.setExitFadeDuration(5000) //milliseconds
-        gradientAnimation.start()
+//        val gradientAnimation = binding.scrollView.background as AnimationDrawable
+//        gradientAnimation.setEnterFadeDuration(10)
+//        gradientAnimation.setExitFadeDuration(5000) //milliseconds
+//        gradientAnimation.start()
 
 
         return binding.root

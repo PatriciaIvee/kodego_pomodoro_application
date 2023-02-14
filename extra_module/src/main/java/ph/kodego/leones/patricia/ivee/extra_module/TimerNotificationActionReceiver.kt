@@ -1,4 +1,4 @@
-package ph.kodego.leones.patricia.ivee.pomodoroapplication.ui.timer
+package ph.kodego.leones.patricia.ivee.extra_module
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -12,7 +12,7 @@ class TimerNotificationActionReceiver : BroadcastReceiver()  {
         when (intent.action){
             AppConstants.ACTION_STOP -> {
                 TimerFragment.removeAlarm(context)
-                PreferenceUtility.setTimerState(TimerFragment.TimerState.STOPPED, context)
+                PreferenceUtility.setTimerState(TimerFragment.TimerState.Stopped, context)
                 NotificationUtil.hideTimerNotification(context)
             }
             AppConstants.ACTION_PAUSE -> {
@@ -24,20 +24,20 @@ class TimerNotificationActionReceiver : BroadcastReceiver()  {
                 PreferenceUtility.setSecondsRemaining(secondsRemaining, context)
 
                 TimerFragment.removeAlarm(context)
-                PreferenceUtility.setTimerState(TimerFragment.TimerState.PAUSED, context)
+                PreferenceUtility.setTimerState(TimerFragment.TimerState.Paused, context)
                 NotificationUtil.showTimerPaused(context)
             }
             AppConstants.ACTION_RESUME -> {
                 val secondsRemaining = PreferenceUtility.getSecondsRemaining(context)
                 val wakeUpTime = TimerFragment.setAlarm(context, TimerFragment.nowSeconds, secondsRemaining)
-                PreferenceUtility.setTimerState(TimerFragment.TimerState.RUNNING, context)
+                PreferenceUtility.setTimerState(TimerFragment.TimerState.Running, context)
                 NotificationUtil.showTimerRunning(context, wakeUpTime)
             }
             AppConstants.ACTION_START -> {
                 val minutesRemaining = PreferenceUtility.getTimerLength(context)
                 val secondsRemaining = minutesRemaining * 60L
                 val wakeUpTime = TimerFragment.setAlarm(context, TimerFragment.nowSeconds, secondsRemaining)
-                PreferenceUtility.setTimerState(TimerFragment.TimerState.RUNNING, context)
+                PreferenceUtility.setTimerState(TimerFragment.TimerState.Running, context)
                 PreferenceUtility.setSecondsRemaining(secondsRemaining, context)
                 NotificationUtil.showTimerRunning(context, wakeUpTime)
             }

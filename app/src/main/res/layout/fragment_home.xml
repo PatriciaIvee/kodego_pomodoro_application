@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment"
-    android:background="@drawable/background_gradient_animation"
     android:scrollbars="none"
     android:id="@+id/scrollView"
+    android:background="@color/apple_theme_white">
 
-    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,20 +20,18 @@
             android:id="@+id/text_view_today_s_task"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_extrabold"
             android:text="@string/today_s_task"
             android:textSize="@dimen/title_text_size"
             android:layout_marginTop="@dimen/large_margin"
             android:layout_marginHorizontal="@dimen/medium_margin"
+            style="@style/MyTextAppearanceHeading1"
             />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/horizontal_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:textSize="25sp"
+            android:layout_height="300dp"
             android:layout_gravity="center"
-            android:clipToPadding="false"
             android:layout_marginTop="@dimen/medium_margin"
             android:layout_marginHorizontal="@dimen/medium_margin"
             >
@@ -45,16 +42,16 @@
             android:layout_height="wrap_content"
             android:text="@string/tasks"
             android:textSize="@dimen/title_text_size"
-            android:fontFamily="@font/nunito_extrabold"
+            android:fontFamily="@font/press_start_2p"
             android:textAlignment="center"
             android:layout_marginTop="@dimen/large_margin"
-            android:layout_marginHorizontal="@dimen/medium_margin"/>
+            android:layout_marginHorizontal="@dimen/medium_margin"
+            android:textColor="@color/apple_theme_dark_green"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tasks_mini"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:textSize="25sp"
             android:layout_marginTop="@dimen/small_margin"
             android:layout_marginHorizontal="@dimen/medium_margin"
             >
@@ -65,8 +62,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/see_all_tasks"
-            android:textSize="@dimen/list_title_text_size"
-            android:fontFamily="@font/nunito_extrabold"
             android:textAlignment="center"
             android:layout_marginTop="@dimen/small_margin"/>
 
@@ -76,10 +71,11 @@
             android:layout_height="wrap_content"
             android:text="@string/completed_tasks"
             android:textSize="@dimen/title_text_size"
-            android:fontFamily="@font/nunito_extrabold"
+            android:fontFamily="@font/press_start_2p"
             android:textAlignment="center"
             android:layout_marginTop="@dimen/large_margin"
-            android:layout_marginHorizontal="@dimen/medium_margin"/>
+            android:layout_marginHorizontal="@dimen/medium_margin"
+            android:textColor="@color/apple_theme_dark_green"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/completed_tasks_mini"
@@ -97,11 +93,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/see_all_completed_tasks"
-            android:textSize="@dimen/list_title_text_size"
-            android:fontFamily="@font/nunito_extrabold"
             android:textAlignment="center"
             android:layout_marginTop="@dimen/small_margin"
-            android:layout_marginHorizontal="@dimen/medium_margin"/>
+            android:layout_marginHorizontal="@dimen/medium_margin"
+            android:layout_marginBottom="100dp"/>
 
     </LinearLayout>
 
