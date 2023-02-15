@@ -10,7 +10,8 @@ class Task (var taskName:String = "Unknown", var status:String = "Unknown") {
     var focusTime : Int = 0
     var shortBreak : Int = 0
     var longBreak : Int = 0
-    var timeInterval : Int = 0
+    var cycles : Int = 0
+    var longBreakAfterCycle :Int = 0
 
     //    constructor for default values (firstname, lastname, profile picture)
     constructor(): this("","")

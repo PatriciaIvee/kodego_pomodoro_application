@@ -20,7 +20,7 @@
         android:text="@string/task_name"
         android:textColor="@color/apple_theme_really_dark_green"
         android:textAlignment="center"
-        android:textSize="28sp"
+        android:textSize="22sp"
 
         app:layout_constraintBottom_toTopOf="@id/text_task_status"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,16 +40,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_task_name"
-        app:layout_constraintBottom_toTopOf="@id/text_view_repetition"/>
+        app:layout_constraintBottom_toTopOf="@id/text_view_cycles"/>
 
     <TextView
-        android:id="@+id/text_view_repetition"
+        android:id="@+id/text_view_cycles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/repetition"
+        android:text="@string/cycles"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +80,7 @@
         android:text="@string/_00_00"
         android:textAlignment="center"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@id/progress_bar_repetition"
+        app:layout_constraintBottom_toTopOf="@id/progress_bar_cycles"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/progress_bar_timer" />
@@ -99,10 +99,10 @@
         app:layout_constraintBottom_toTopOf="@id/text_timer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_repetition" />
+        app:layout_constraintTop_toBottomOf="@id/text_view_cycles" />
 
     <ProgressBar
-        android:id="@+id/progress_bar_repetition"
+        android:id="@+id/progress_bar_cycles"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_timer"
-        app:layout_constraintBottom_toTopOf="@id/progress_bar_repetition"/>
+        app:layout_constraintBottom_toTopOf="@id/progress_bar_cycles"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_play"
@@ -124,7 +124,7 @@
         app:layout_constraintEnd_toStartOf="@id/btn_pause"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/progress_bar_repetition" />
+        app:layout_constraintTop_toBottomOf="@id/progress_bar_cycles" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_pause"
@@ -136,7 +136,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_stop"
         app:layout_constraintStart_toEndOf="@id/btn_play"
-        app:layout_constraintTop_toBottomOf="@id/progress_bar_repetition" />
+        app:layout_constraintTop_toBottomOf="@id/progress_bar_cycles" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_stop"
@@ -148,6 +148,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btn_pause"
-        app:layout_constraintTop_toBottomOf="@id/progress_bar_repetition" />
+        app:layout_constraintTop_toBottomOf="@id/progress_bar_cycles" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
