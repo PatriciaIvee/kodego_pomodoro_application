@@ -1,11 +1,13 @@
 package ph.kodego.leones.patricia.ivee.pomodoroapplication.ui.timer
 
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import ph.kodego.leones.patricia.ivee.pomodoroapplication.R
@@ -17,21 +19,22 @@ class TimerFragment : Fragment() {
     private var _binding: FragmentTimerBinding? = null
     private val binding get() = _binding!!
 
-    private var focusTime: Int? = null
-    private var shortBreak: Int? = null // breakTimer
-    private var longBreak: Int? = null // breakTimer
-    private var repetition: Int? = null //roundCount
-
+    private var focusTime: Long = 0L
+    private var shortBreak: Long = 0L // breakTimer
+    private var longBreak: Long = 0L // breakTimer
+    private var focusTimeCycle:Int = 0
+    private var cycles: Int = 0 //roundCount
+    private var longBreakPlayAfterCycle: Int = 0
+    private var focusTimeInMillis :Long= 0L
+    private var shortBreakInMillis: Long = 0L
+    private var longBreakInMillis : Long = 0L
+//    private var taskPriority: java.io.Serializable = ""
 
     private lateinit var timer: CountDownTimer
 
     private final var LOGINFO = "TIMER_FRAGMENT"
 
-    private enum class TimerState {
-        FOCUS,
-        SHORT_BREAK,
-        LONG_BREAK
-    }
+
 
 
 
@@ -46,6 +49,7 @@ class TimerFragment : Fragment() {
         return binding.root
     }
 
+//    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //var data = this.arguments
@@ -56,8 +60,9 @@ class TimerFragment : Fragment() {
             Log.d(LOGINFO,"FocusTime value is: ${ args.getInt("focusTime").toString() }")
             Log.d(LOGINFO,"ShortBreak value is: ${  args.getInt("shortBreak").toString() }")
             Log.d(LOGINFO,"LongBreak value is: ${  args.getInt("longBreak").toString() }")
-            Log.d(LOGINFO,"Repetition value is: ${  args.getInt("repetition").toString() }")
-
+            Log.d(LOGINFO,"Cycles value is: ${  args.getInt("cycles").toString() }")
+            Log.d(LOGINFO,"longBreakPlayAfterCycle value is: ${  args.getInt("longBreakPlayAfterCycle").toString() } ")
+            Log.d(LOGINFO,"taskPriority value is: ${args.get("taskPriority")}")
 
             //Get task Name from the task fragment
             val taskName = args.getString("taskName").toString()
@@ -67,23 +72,28 @@ class TimerFragment : Fragment() {
 
 
             // Get the Info Needed for Timer
-            focusTime = args.getInt("focusTime", 0).toInt() * 60 * 1000
-            shortBreak = args.getInt("shortBreak", 0).toInt()* 60 * 1000
-            longBreak = args.getInt("longBreak", 0).toInt()* 60 * 1000
-            repetition = args.getInt("repetition", 0) //Round
+            focusTime = args.getInt("focusTime", 0).toLong()
+            shortBreak = args.getInt("shortBreak", 0).toLong()
+            longBreak = args.getInt("longBreak", 0).toLong()
+            cycles = args.getInt("cycles", 0).toInt()
+            longBreakPlayAfterCycle = args.getInt("longBreakPlayAfterCycle",0)
 
-//            binding.textViewRepetition.text = "$timeFinished / $repetition "
+
+            focusTimeInMillis = args.getInt("focusTime").toLong() * 60 * 1000 // convert minutes to milliseconds
+            shortBreakInMillis = args.getInt("shortBreak").toLong() * 60 * 1000 // convert minutes to milliseconds
+            longBreakInMillis = args.getInt("longBreak").toLong() * 60 * 1000 // convert minutes to milliseconds
+            cycles = args.getInt("cycles")
+            longBreakPlayAfterCycle = args.getInt("longBreakPlayAfterCycle",0)
+
+            binding.textViewCycles.text = "$focusTimeCycle / $cycles "
+            binding.progressBarCycles.progress = (focusTimeCycle.toFloat() / cycles.toFloat() * 100).toInt()
         }
 
         //Play the timer
         binding.btnPlay.setOnClickListener {
-            setDefaultPatternTimer()
-            if (isTimerPaused) {
-                resumeTimer()
-            } else {
-                // other code to start a new timer
+            if (!isTimerRunning) {
+                startTimer()
             }
-            isTimerPaused = false
         }
 
         //Pause the timer
@@ -93,127 +103,130 @@ class TimerFragment : Fragment() {
 
         //Stop and reset Timer
         binding.btnStop.setOnClickListener {
-            stopTimer()
+            timer.cancel()
+//            stopTimer()
         }
     }
 
-    private var timeFinished = 0 // time finished over the time repetition you need
+    //        binding.btnPlay.visibility = View.GONE
+    private var isTimerRunning = false
 
-    private var focusTimeCount = 0 // var for focus time interval repetition
-    private var cyclesBeforeLongBreak = 4 // When (cycle) Long break to be inserted
-    private var nextBreakIsLong = false
-    var remainingTime: Long = 0
-    var isTimerPaused = false
-    var isTimerStopped = false
+    private fun startTimer() {
+        if (isTimerRunning) {
+            return // If timer is running, don't start another one
+//             return@setOnClickListener
+        }
+
+        isTimerRunning = true
+
+        var cycleCount = 0
+
+        val timer = object : CountDownTimer(focusTimeInMillis, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                binding.progressBarTimer.progress = (100 * millisUntilFinished / focusTimeInMillis).toInt()
+                binding.backgroundLayout.background = context?.let { ContextCompat.getDrawable(it, R.drawable.red_background_gradient) }
+                binding.textTaskStatus.text = "Focus Time!"
+                val seconds = (millisUntilFinished / 1000) % 60
+                val minutes = (millisUntilFinished / (1000 * 60)) % 60
+                binding.textTimer.text = String.format("%02d:%02d", minutes, seconds)
+//                binding.progressBarCycles.progress = focusTimeCycle/cycles
+//                binding.textViewCycles.text = (focusTimeCycle/cycles).toString()
+            }
+
+            override fun onFinish() {
+
+                cycleCount++
+                focusTimeCycle++
+                isTimerRunning = false
+
+
+                if (focusTimeCycle == cycles) {
+                    binding.progressBarCycles.progress = binding.progressBarCycles.max
+                    binding.textViewCycles.text = "$focusTimeCycle / $cycles "
+                    return // Stop the timer if the cycle count reaches the maximum
+                }
+
+                if (focusTimeCycle == longBreakPlayAfterCycle) {
+                    // reset cycle count and play long break timer
+                    val longBreakTimer = object : CountDownTimer(longBreakInMillis, 1000) {
+                        // implement onTick and onFinish methods as above
+                        override fun onTick(millisUntilFinished: Long) {
+                            binding.progressBarTimer.progress = (100 * millisUntilFinished / longBreakInMillis).toInt()
+                            binding.backgroundLayout.background = context?.let { ContextCompat.getDrawable(it, R.drawable.green_gradient_background) }
+                            binding.textTaskStatus.text = "Long Break!"
+                            val seconds = (millisUntilFinished / 1000) % 60
+                            val minutes = (millisUntilFinished / (1000 * 60)) % 60
+                            binding.textTimer.text = String.format("%02d:%02d", minutes, seconds)
+                        }
+
+                        override fun onFinish() {
+//                            isTimerRunning = false
+//                            updateTimerTextUI(DEFAULT_TIME)
+//                            timer = null
+//                            startTimer()
+                        }
+                    }
+                    longBreakTimer.start()
+                    cycleCount = 0
+                } else{
+                    // switch to short break timer
+                    val breakTimer = object : CountDownTimer(shortBreakInMillis, 1000) {
+                        // implement onTick and onFinish methods as above
+                        override fun onTick(millisUntilFinished: Long) {
+                            binding.progressBarTimer.progress = (100 * millisUntilFinished / shortBreakInMillis).toInt()
+                            binding.backgroundLayout.background = context?.let { ContextCompat.getDrawable(it, R.drawable.blue_gradient_background) }
+                            binding.textTaskStatus.text = "Short Break!"
+                            val seconds = (millisUntilFinished / 1000) % 60
+                            val minutes = (millisUntilFinished / (1000 * 60)) % 60
+                            binding.textTimer.text = String.format("%02d:%02d", minutes, seconds)
+                        }
+
+                        override fun onFinish() {
+                            isTimerRunning = false
+                            startTimer()
+                        }
+                    }
+                    breakTimer.start()
+                }
+                // update cycle count display
+                binding.progressBarCycles.progress = (focusTimeCycle.toFloat() / cycles.toFloat() * 100).toInt()
+                binding.textViewCycles.text = "$focusTimeCycle/$cycles"
+            }
+
+        }
+        timer.start()
+    }
+
 
 
     //TODO: make a variable that will get all the time the user completed (to be added to the database)
-    //TODO: Change pattern to not constant pattern
     //TODO: Add sound when the timer starts, pauses, runs and stops
-    private fun setDefaultPatternTimer() {
-        //current pattern = 4 focus time repeats before the long break comes
 
-//        val timer: CountDownTimer
-            when (timeFinished) {
-                0, 2, 4, 6 -> {
-                    timer = object : CountDownTimer(focusTime!!.toLong() + 500, 1000) {
-                        override fun onTick(remainingTime: Long) {
-                            binding.backgroundLayout.background =
-                                context?.let {
-                                    ContextCompat.getDrawable(
-                                        it,
-                                        R.drawable.red_background_gradient
-                                    )
-                                }
-                            binding.progressBarTimer.progress =
-                                (100 * (remainingTime / 1000) / (focusTime!!.toLong() / 1000)).toInt()
-                            binding.textTaskStatus.text = "Focus Time!"
-                            binding.textTimer.text = createTimeFormat((remainingTime / 1000).toInt())
-                        }
+    //TODO: Add Pause and stop Button and function for the timer
 
-                        override fun onFinish() {
-                            timeFinished++
-                            setDefaultPatternTimer()
-                        }
-                    }
-                }
-                1, 3, 5 -> {
-                    timer = object : CountDownTimer(shortBreak!!.toLong() + 500, 1000) {
-                        override fun onTick(remainingTime: Long) {
-                            binding.backgroundLayout.background =
-                                context?.let { ContextCompat.getDrawable(it, R.drawable.blue_gradient_background) }
-                            binding.progressBarTimer.progress = (100 * (remainingTime / 1000) / (shortBreak!!.toLong() / 1000)).toInt()
-                            binding.textTaskStatus.text = "Short Break"
-                            binding.textTimer.text = createTimeFormat((remainingTime / 1000).toInt())
 
-                        }
-
-                        override fun onFinish() {
-                            timeFinished++
-                            setDefaultPatternTimer()
-                        }
-                    }
-                }
-                else -> {
-                    timer = object : CountDownTimer(longBreak!!.toLong() + 500, 1000) {
-                        override fun onTick(remainingTime: Long) {
-                            binding.backgroundLayout.background =
-                                context?.let { ContextCompat.getDrawable(it, R.drawable.green_gradient_background) }
-                            binding.progressBarTimer.progress = (100 * (remainingTime / 1000) / (longBreak!!.toLong() / 1000)).toInt()
-                            binding.textTaskStatus.text = "Long Break"
-                            binding.textTimer.text = createTimeFormat((remainingTime / 1000).toInt())
-                        }
-
-                        override fun onFinish() {
-                            timeFinished = 0
-                            setDefaultPatternTimer()
-                        }
-                    }
-                }
-            }
-            timer.start()
+    var isTimerPaused = false
+    var isTimerStopped = false
+    private var pausedTimeFinished = 0
+    private enum class TimerState {
+        FOCUS,
+        SHORT_BREAK,
+        LONG_BREAK
     }
+
 
     private fun pauseTimer() {
         timer?.cancel()
-//        timer = null
-//        remainingTime = ((binding.progressBarTimer.progress / 100f) *
-//                (getCurrentTime()?.toLong() ?: 0)).toLong()
+
+//        remainingTime = timer?.remainingTime ?: 0L
         isTimerPaused = true
     }
     private fun stopTimer() {
         timer.cancel()
+        remainingTime = 0L
         isTimerStopped = true
     }
-    private fun resumeTimer() {
-        timer = object : CountDownTimer(remainingTime, 1000) {
-            override fun onTick(remainingTime: Long) {
-                this@TimerFragment.remainingTime = remainingTime
-                binding.progressBarTimer.progress = (100 * (remainingTime / 1000) / (focusTime!!.toLong() / 1000)).toInt()
-                binding.textTimer.text = createTimeFormat((remainingTime / 1000).toInt())
-            }
-
-            override fun onFinish() {
-                timeFinished++
-                setDefaultPatternTimer()
-            }
-        }
-        timer?.start()
-    }
-
-    private fun createTimeFormat(time : Int): String {
-        var timeFormat = ""
-        val minutes = time / 60
-        val seconds = time % 60
-
-        if (minutes < 10) timeFormat += "0"
-        timeFormat += "$minutes:"
-
-        if (seconds < 10) timeFormat += "0"
-        timeFormat += seconds
-
-        return timeFormat
-    }
+    var remainingTime: Long? = null
 
 
     override fun onDestroyView() {
@@ -221,11 +234,6 @@ class TimerFragment : Fragment() {
         _binding = null
     }
 }
-
-
-
-
-
 
 
 
