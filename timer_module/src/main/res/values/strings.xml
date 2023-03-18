@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Pomodoro Application</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="today_s_task">Today\'s Task</string>
+    <string name="see_all_completed_tasks">See All Completed Tasks</string>
+    <string name="completed_tasks">Completed Tasks</string>
+    <string name="tasks">Tasks</string>
+    <string name="x">X</string>
+    <string name="title_activity_master">MasterActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="see_all_tasks">See All Tasks</string>
+    <string name="task">Task</string>
+    <string name="timer">Timer</string>
+    <string name="settings">Settings</string>
+    <string name="statistics">Statistics</string>
+    <string name="blank_number">--</string>
+    <string name="task_name">Task Name</string>
+    <string name="task_status">Task Status</string>
+    <string name="_00_00">00:00</string>
+    <string name="repetition">Repetition</string>
+    <string name="cycles">Cycles</string>
+    <string name="action_settings">Settings</string>
+    <string name="preference">Preference</string>
+    <string name="title_activity_settings_not_final">SettingsNotFinalActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+</resources>
