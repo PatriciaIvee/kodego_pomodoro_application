@@ -65,13 +65,14 @@
                 //long break repetition
                 <com.h6ah4i.android.preference.NumberPickerPreferenceCompat
                     android:key="ph.kodego.leones.patricia.ivee.timer.long_break_repetition"
-                    android:max="60"
+                    app:nppc_maxValue="60"
+                    app:nppc_minValue="1"
                     android:summary="After long hours of focusing,
                     \nwhen do you want to take a long rest?"
                     android:title="Long break Repetition"
-                    app:min="1"
                     app:seekBarIncrement="1"
-                    app:showSeekBarValue="true" />
+                    app:showSeekBarValue="true"
+                    app:nppc_unitText="every __ time"/>
 
 
         </androidx.preference.PreferenceCategory>

@@ -7,11 +7,21 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
+import ph.kodego.leones.patricia.ivee.myapplication.MainActivity.TimerMode.*
 import ph.kodego.leones.patricia.ivee.myapplication.databinding.ActivityMainBinding
 import ph.kodego.leones.patricia.ivee.myapplication.util.NotificationUtil
 import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil
+import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.getLongBreakTimerLength
+import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.getShortBreakTimerLength
+import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.getTaskName
+import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.getTimerCycles
+import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.getTimerLength
+import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.getTimerMode
+import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.setTimerMode
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -42,15 +52,24 @@ class MainActivity : AppCompatActivity() {
     enum class TimerState{
         STOPPED,
         PAUSED,
-        RUNNING
+        RUNNING,
+        COMPLETED
     }
 
     private lateinit var timer: CountDownTimer
     private var timerLengthSeconds: Long = 0
     private var timerState = TimerState.STOPPED
-    private var timerMode = TimerMode.FOCUS
-
+    private var timerMode = FOCUS
+    //when task is completed it will be moved to completed tasks. Not sure if this is still necessary
+    private var isTaskCompleted = false
     private var secondsRemaining: Long = 0
+    //focusTimerCount is supposed to be a var for the completed focus time (HOw many focus time
+    // is completed )
+    private var focusTimerCount = 0
+    private var playLongBreak = 0
+    private var cycles = 0
+    var currentCycle = 0
+
 
     private lateinit var binding : ActivityMainBinding
 
@@ -58,11 +77,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-//        setSupportActionBar(toolbar)
-//        supportActionBar?.setIcon(R.drawable.ic_timer)
+
         supportActionBar?.title = "      Timer"
-//        PrefUtil.setTaskName("My Task", this)
-        binding.textTaskName.text = PrefUtil.getTaskName(this).toString()
+
+        setTimerMode(FOCUS, this)
+        bindItems()
+
         binding.btnPlay.setOnClickListener{v ->
             startTimer()
             timerState =  TimerState.RUNNING
@@ -86,10 +106,13 @@ class MainActivity : AppCompatActivity() {
 
         initTimer()
         removeAlarm(this)
+
         //hide notification
         NotificationUtil.hideTimerNotification(this)
+
         // Updates the name of the task if you want from the settings preferences
         val taskName = PrefUtil.getTaskName(this)
+
         binding.textTaskName.text = taskName ?: ""
     }
 
@@ -113,13 +136,22 @@ class MainActivity : AppCompatActivity() {
         PrefUtil.setTimerState(timerState, this)
     }
 
+
+
     private fun initTimer(){
         timerState = PrefUtil.getTimerState(this)
+
+        getTimerMode(this)
+        Log.d("initTimer", "timer mode is ${timerMode}")
+        Log.d("initTimer", "get timer mode is ${getTimerMode(this)}")
+        Log.d("initTimer","current cycle is $currentCycle")
 
         //we don't want to change the length of the timer which is already running
         //if the length was changed in settings while it was backgrounded
         if (timerState == TimerState.STOPPED)
-            setNewTimerLength()
+
+            setTimerLength()
+
         else
             setPreviousTimerLength()
 
@@ -145,12 +177,21 @@ class MainActivity : AppCompatActivity() {
         updateCountdownUI()
     }
 
-    private fun onTimerFinished(){
-        timerState = TimerState.STOPPED
 
+    private fun onTimerFinished(){
+        //TODO:Change Stop To Next
+        timerState = TimerState.STOPPED
+        getTimerMode(this)
+        Log.d("onTimerFinished", "$timerMode Finished")
         //set the length of the timer to be the one set in SettingsActivity
         //if the length was changed when the timer was running
-        setNewTimerLength()
+        switchTimer()
+
+        bindItems()
+
+        setTimerLength()
+
+        timerDone()
 
         binding.progressBarTimer.progress = 0
 
@@ -176,6 +217,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun setNewTimerLength(){
         val lengthInMinutes = PrefUtil.getTimerLength(this)
+        timerLengthSeconds = (lengthInMinutes * 60L)
+        binding.progressBarTimer.max = timerLengthSeconds.toInt()
+    }
+
+    private fun setShortBreakTimerLength(){
+        val lengthInMinutes = PrefUtil.getShortBreakTimerLength(this)
+        timerLengthSeconds = (lengthInMinutes * 60L)
+        binding.progressBarTimer.max = timerLengthSeconds.toInt()
+    }
+    private fun setLongBreakTimerLength(){
+        val lengthInMinutes = PrefUtil.getLongBreakTimerLength(this)
         timerLengthSeconds = (lengthInMinutes * 60L)
         binding.progressBarTimer.max = timerLengthSeconds.toInt()
     }
@@ -210,6 +262,12 @@ class MainActivity : AppCompatActivity() {
                 binding.btnPause.isEnabled = false
                 binding.btnStop.isEnabled = true
             }
+
+            TimerState.COMPLETED -> {
+                binding.btnPlay.isEnabled = false
+                binding.btnPause.isEnabled = false
+                binding.btnStop.isEnabled = false
+            }
         }
     }
 
@@ -220,28 +278,84 @@ class MainActivity : AppCompatActivity() {
     }
     //This is supposed to switch the timer if for example the focus time is finished and now
     //it's either going to be a short break or a long break
-    private fun switchTimer(){
-        when(timerMode){
-            // focusTimerFinished = 0
-            //playLongBreak = 4 // this is when we want to play the long break timer
-            //after the 4th finished focus time
-            TimerMode.FOCUS -> {
-                // displays the focus timer
+
+    private fun setTimerLength() {
+        Log.d("SET TIMER LENGTH","timer mode is ${timerMode}")
+        Log.d("SET TIMER LENGTH","get timer mode is ${getTimerMode(this) }")
+        when(timerMode) {
+            FOCUS -> setNewTimerLength()
+            SHORT_BREAK -> setShortBreakTimerLength()
+            LONG_BREAK -> setLongBreakTimerLength()
+        }
+
+    }
+
+    private fun switchTimer() {
+        Log.d("SWITCH TIMER","${timerMode}")
+        Log.d("SWITCH TIMER","switch timer mode is ${getTimerMode(this) }")
+
+        when (timerMode) {
+            FOCUS -> {
+                currentCycle++
+                Log.d("SWITCH TIMER","current cycle is $currentCycle")
+                val longBreakRepetition = PrefUtil.getLongBreakRepetition(this)
+                if (longBreakRepetition > 0 && currentCycle % longBreakRepetition == 0) {
+                    timerMode = LONG_BREAK
+                    setTimerMode(timerMode, this)
+                }else{
+                    timerMode = SHORT_BREAK
+                    setTimerMode(timerMode, this)
+                }
+
             }
-            TimerMode.SHORT_BREAK-> {
-                //TODO:SwitchFocusTimer to short break if the required long break is not met
-                //for example the current finished focus time is 2 and we need to play the long
-                //break after the 4th finished focus time
-                // when the focus timer is finsished it will switch to short break
+            SHORT_BREAK -> {
+                timerMode = FOCUS
+                setTimerMode(timerMode, this)
+
             }
-            TimerMode.LONG_BREAK -> {
-            //TODO:Switch focus Timer to Long break if the condition is met
-            // (if(current focusTimerFinished == to playLongBreak-requirement){
-            // switchTimer to long break
-            // }
-            // )
+            LONG_BREAK -> {
+                timerMode = FOCUS
+                setTimerMode(timerMode, this)
+
             }
         }
+
+    }
+
+
+    private fun timerDone(){
+        cycles = PrefUtil.getTimerCycles(this)
+        if (currentCycle == cycles){
+            isTaskCompleted = true
+            timerState = TimerState.COMPLETED
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Timer Finished")
+            builder.setMessage("Congratulations! \nYou've successfully finished your task.")
+            builder.setPositiveButton("OK") { dialog, which ->
+                //TODO: ADD or update the task in the database or firebase
+                // Perform any action when the user clicks the OK button
+                // For example, you can start a new timer or navigate to another activity
+            }
+            builder.show()
+        }else {
+            isTaskCompleted = false
+        }
+    }
+
+    private fun bindItems() {
+        val textStatus = getTimerMode(this).toString()
+        binding.textTaskStatus.text = textStatus
+
+        val taskName = getTaskName(this).toString()
+        binding.textTaskName.text = taskName
+
+        val cycles = getTimerCycles(this).toString()
+        binding.textViewCycles.text = "$currentCycle / $cycles"
+
+        val progressPercent = (currentCycle.toFloat()
+                / getTimerCycles(this).toFloat()) * 100
+        binding.progressBarCycles.progress = progressPercent.toInt()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -264,4 +378,48 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
 }
+
+
+//Make the progress bar into dots or some shape
+//val maxDots = 5 // maximum number of dots to display in progress bar
+//var originalCycles = 15 // original number of cycles set by user
+//
+//fun setNumberOfCycles(cycles: Int) {
+//    if (cycles > maxDots) {
+//        originalCycles = cycles
+//        setupProgressBar(maxDots)
+//    } else {
+//        originalCycles = cycles
+//        setupProgressBar(cycles)
+//    }
+//}
+// create a custom drawable with a number of dots equal to the maximum number of dots,
+// but store the original number of cycles in a separate variable in the drawable.
+// For example:
+//kotlin
+//Copy code
+//class CustomProgressBarDrawable(dotsCount: Int, dotSize: Int, defaultColor: Int) : Drawable() {
+//    private var dotsCount = dotsCount
+//    private var originalCycles = dotsCount
+//    // other fields and methods here
+//}
+
+//fun setupProgressBar(cycles: Int) {
+//    val progressBar = findViewById<ProgressBar>(R.id.progress_bar)
+//    val drawable = CustomProgressBarDrawable(dotsCount = maxDots, dotSize = 16, defaultColor = Color.GRAY)
+//    drawable.originalCycles = originalCycles
+//    progressBar.progressDrawable = drawable
+//}
+
+//val currentCycle = 3 // get current cycle number here
+//val progress = currentCycle.toFloat() / originalCycles.toFloat() * maxDots
+//drawable.setCurrentProgress(progress)
+
+
+
+

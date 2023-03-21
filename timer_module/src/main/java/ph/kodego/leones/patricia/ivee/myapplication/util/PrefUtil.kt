@@ -48,7 +48,7 @@ class PrefUtil {
         }
 
         // GET AND SET CYCLES
-        private const val TIMER_CYCLES_ID = "ph.kodego.leones.patricia.ivee.timer.cycles"
+        const val TIMER_CYCLES_ID = "ph.kodego.leones.patricia.ivee.timer.cycles"
         fun getTimerCycles(context: Context): Int {
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             return preferences.getInt(TIMER_CYCLES_ID, 0)
@@ -102,8 +102,18 @@ class PrefUtil {
             editor.apply()
         }
 
+        //GET AND SET FOCUS TIMER FINISHED
 
-
+        private const val FOCUS_TIMER_FINISHED_ID = "ph.kodego.leones.patricia.ivee.timer.focus_timer_finished"
+        fun getFocusTimerFinished(context: Context): Int {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            return preferences.getInt(FOCUS_TIMER_FINISHED_ID, 0)
+        }
+        fun setFocusTimerFinished(cycles: Int, context: Context) {
+            val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+            editor.putString(FOCUS_TIMER_FINISHED_ID, cycles.toString())
+            editor.apply()
+        }
 
         //GET AND SET TIMER MODE
         private const val TIMER_MODE_ID = "ph.kodego.leones.patricia.ivee.timer.timer_mode"
