@@ -15,14 +15,13 @@ import ph.kodego.leones.patricia.ivee.myapplication.MainActivity.TimerMode.*
 import ph.kodego.leones.patricia.ivee.myapplication.databinding.ActivityMainBinding
 import ph.kodego.leones.patricia.ivee.myapplication.util.NotificationUtil
 import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil
-import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.getLongBreakTimerLength
-import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.getShortBreakTimerLength
 import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.getTaskName
 import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.getTimerCycles
-import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.getTimerLength
 import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.getTimerMode
 import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.setTimerMode
+import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -69,7 +68,8 @@ class MainActivity : AppCompatActivity() {
     private var playLongBreak = 0
     private var cycles = 0
     var currentCycle = 0
-
+    private var onTaskCompleteListener: OnTaskCompleteListener? = null
+    private var taskStartTime: Long = 0
 
     private lateinit var binding : ActivityMainBinding
 
@@ -177,10 +177,19 @@ class MainActivity : AppCompatActivity() {
         updateCountdownUI()
     }
 
-
+    private val completedTimes = ArrayList<Long>()
     private fun onTimerFinished(){
-        //TODO:Change Stop To Next
+
         timerState = TimerState.STOPPED
+        if (timerMode == FOCUS){
+            val focusTimerCompleted = System.currentTimeMillis()
+            completedTimes.add(focusTimerCompleted)
+            val formattedTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+                Locale.getDefault()).format(Date(focusTimerCompleted))
+            Log.d("onTimerFinished", "$timerMode end at $formattedTime")
+            Log.d("onTimerFinished", "$timerMode end at $focusTimerCompleted")
+//            Log.d("onTimerFinished", "$timerMode end at $focusTimerCompleted")
+        }
         getTimerMode(this)
         Log.d("onTimerFinished", "$timerMode Finished")
         //set the length of the timer to be the one set in SettingsActivity
@@ -191,7 +200,7 @@ class MainActivity : AppCompatActivity() {
 
         setTimerLength()
 
-        timerDone()
+        taskDone()
 
         binding.progressBarTimer.progress = 0
 
@@ -202,8 +211,18 @@ class MainActivity : AppCompatActivity() {
         updateCountdownUI()
     }
 
+    private val startTimes = ArrayList<Long>()
     private fun startTimer(){
         timerState = TimerState.RUNNING
+        if (timerMode == FOCUS){
+            val focusTimerStarted = System.currentTimeMillis() // record start time
+            startTimes.add(focusTimerStarted) // add start time to array list
+            val formattedTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+                Locale.getDefault()).format(Date(focusTimerStarted))
+            Log.d("startTimer", "$timerMode start at $formattedTime")
+            Log.d("startTimer", "$timerMode start at $focusTimerStarted")
+        }
+
 
         timer = object : CountDownTimer(secondsRemaining * 1000, 1000) {
             override fun onFinish() = onTimerFinished()
@@ -264,7 +283,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             TimerState.COMPLETED -> {
-                binding.btnPlay.isEnabled = false
+                binding.btnPlay.isEnabled = true
                 binding.btnPause.isEnabled = false
                 binding.btnStop.isEnabled = false
             }
@@ -323,15 +342,45 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun timerDone(){
+    private fun taskDone(){
         cycles = PrefUtil.getTimerCycles(this)
         if (currentCycle == cycles){
             isTaskCompleted = true
             timerState = TimerState.COMPLETED
+
+            //COMPUTE THE TIME COMPLETED
+            var totalTimeCompleted = 0L
+            for (i in 0 until completedTimes.size) {
+                val cycleTimeCompleted = completedTimes[i] - startTimes[i]
+                totalTimeCompleted += cycleTimeCompleted
+
+            }
+            val hours = TimeUnit.MILLISECONDS.toHours(totalTimeCompleted)
+            val minutes = TimeUnit.MILLISECONDS.toMinutes(totalTimeCompleted) % 60
+            val seconds = TimeUnit.MILLISECONDS.toSeconds(totalTimeCompleted) % 60
+
+            //00:00:00 FORMAT
+            val formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+            //SOMEWHAT STRING FORMAT
+            val timeCompletedFormatted = "$hours hours"
+
+            Log.d("taskDone", "time completed $timeCompletedFormatted")
+            Log.d("taskDone", "time completed $totalTimeCompleted")
+            Log.d("taskDone", "time completed $formattedTime")
+
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Timer Finished")
             builder.setMessage("Congratulations! \nYou've successfully finished your task.")
+            builder.setMessage("time completed $timeCompletedFormatted")
+            builder.setMessage("time completed $totalTimeCompleted")
+            builder.setMessage("time completed $formattedTime")
             builder.setPositiveButton("OK") { dialog, which ->
+
+
+
+                //PUT TIME COMPLETED IN ANOTHER MODULE
+                val taskCompletionEvent = System.currentTimeMillis()
+//                onTaskCompleteListener?.onTaskCompleted(taskCompletionEvent)
                 //TODO: ADD or update the task in the database or firebase
                 // Perform any action when the user clicks the OK button
                 // For example, you can start a new timer or navigate to another activity
@@ -382,6 +431,9 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    fun setOnTaskCompleteListener(listener: OnTaskCompleteListener) {
+        onTaskCompleteListener = listener
+    }
 }
 
 

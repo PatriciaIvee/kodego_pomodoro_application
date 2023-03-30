@@ -6,6 +6,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.h6ah4i.android.preference.NumberPickerPreferenceCompat
 import com.h6ah4i.android.preference.NumberPickerPreferenceDialogFragmentCompat
+//import ph.kodego.leones.patricia.ivee.myapplication.pref.ButtonPreference
 
 
 class SettingsActivityFragment: PreferenceFragmentCompat() {
@@ -32,5 +33,14 @@ class SettingsActivityFragment: PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
+//        val buttonPreference = findPreference<ButtonPreference>("save_button")
+
+        //SAVE BUTTON ON PREFERENCE
+//        buttonPreference?.setOnButtonClickListener(object : OnButtonClickListener {
+//            override fun onButtonClicked(data: String) {
+//                // Save the data to the database here
+//                // You can access the context using the `requireContext()` function
+//            }
+//        })
     }
 }

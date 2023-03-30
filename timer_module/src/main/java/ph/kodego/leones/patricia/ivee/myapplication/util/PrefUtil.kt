@@ -158,5 +158,17 @@ class PrefUtil {
             editor.putLong(ALARM_SET_TIME_ID, time)
             editor.apply()
         }
+
+        private const val PREF_TASK_START_TIME = "ph.kodego.leones.patricia.ivee.timer.pref_task_start_time"
+        fun getTaskStartTime(context: Context): Long {
+            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            return prefs.getLong(PREF_TASK_START_TIME, 0)
+        }
+
+        private const val PREF_TASK_COMPLETED_TIME = "pref_task_completed_time"
+        fun getTaskCompletedTime(context: Context): Long {
+            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            return prefs.getLong(PREF_TASK_COMPLETED_TIME, 0)
+        }
     }
 }
