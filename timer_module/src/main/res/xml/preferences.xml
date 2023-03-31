@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
 
         <androidx.preference.PreferenceCategory
-                android:title="Timer Settings">
+                android:title="Task Settings"
+
+                >
                 //Task Name
                 <EditTextPreference
                     app:key="ph.kodego.leones.patricia.ivee.timer.task_name"
@@ -14,17 +18,21 @@
                     android:defaultValue=""
                     android:inputType="text"/>
 
-                //TODO: add timer description
-                //(to be added in the supposedly database recycler view)
                 <EditTextPreference
                     app:key="ph.kodego.leones.patricia.ivee.timer.task_description"
-                    app:title="@string/task_name"
+                    app:title="@string/task_description"
                     android:summary="Add a name for your task."
                     android:dialogTitle="Enter a value"
                     android:defaultValue=""
                     android:inputType="text"/>
 
-                //Timer Length (I want this to be the focusTime Length)
+
+
+
+        </androidx.preference.PreferenceCategory>
+        <androidx.preference.PreferenceCategory
+            android:title="Timer Settings">
+<!--                FOCUS TIMER-->
                 <com.h6ah4i.android.preference.NumberPickerPreferenceCompat
                     app:key="ph.kodego.leones.patricia.ivee.timer.timer_length"
                     app:nppc_maxValue="60"
@@ -33,7 +41,7 @@
                     app:nppc_wrapSelectorWheel="true"
                     app:summary="Change timer length in minutes
                     \n(Focus Timer)"
-                    app:title="Timer Length" />
+                    app:title="Focus Time Length" />
 
                 <com.h6ah4i.android.preference.NumberPickerPreferenceCompat
                     app:key="ph.kodego.leones.patricia.ivee.timer.timer_short_break_length"
@@ -45,6 +53,7 @@
                     \n(Short Break Timer)"
                     app:title="Short Break Length" />
 
+<!--                LONG BREAK TIMER-->
                 <com.h6ah4i.android.preference.NumberPickerPreferenceCompat
                     app:key="ph.kodego.leones.patricia.ivee.timer.timer_long_break_length"
                     app:nppc_maxValue="60"
@@ -55,26 +64,26 @@
                     \n(Long Break Timer)"
                     app:title="Long Break Length" />
 
-                //Cycles
+<!--             CYCLES-->
                 <SeekBarPreference
                     android:key="ph.kodego.leones.patricia.ivee.timer.cycles"
                     app:title="@string/cycles"
                     android:summary="How many cycles do you need to finish your task?"
-                    android:max="60" />
+                    android:max="60"
+                    app:showSeekBarValue="true"/>
 
-                //long break repetition
+<!--                LONG BREAK REPETITION-->
                 <com.h6ah4i.android.preference.NumberPickerPreferenceCompat
                     android:key="ph.kodego.leones.patricia.ivee.timer.long_break_repetition"
                     app:nppc_maxValue="60"
                     app:nppc_minValue="1"
+
                     android:summary="After long hours of focusing,
                     \nwhen do you want to take a long rest?"
                     android:title="Long break Repetition"
                     app:seekBarIncrement="1"
                     app:showSeekBarValue="true"
-                    app:nppc_unitText="every __ time"/>
-
-
+                    app:nppc_unitText="long break at"/>
         </androidx.preference.PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

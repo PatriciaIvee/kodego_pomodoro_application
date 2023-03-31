@@ -15,12 +15,41 @@
         <item name="android:fontFamily">@font/vt323</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/apple_theme_really_dark_green</item>
+<!--        <item name="android:toolbarStyle">@style/ToolbarStyle</item>-->
 
     </style>
 
-<!--    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
-<!--        &lt;!&ndash; ... &ndash;&gt;-->
-<!--        <item name="AppTheme.AppBarOverlay">@style/MyAppBarOverlay</item>-->
-<!--        <item name="AppTheme.PopupOverlay">@style/MyPopupOverlay</item>-->
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/apple_theme_red</item>
+        <item name="colorPrimaryVariant">@color/apple_theme_mid_blue</item>
+        <item name="colorOnPrimary">@color/apple_theme_white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/apple_theme_mid_green</item>
+        <item name="colorSecondaryVariant">@color/apple_theme_dark_green</item>
+        <item name="colorOnSecondary">@color/apple_theme_really_dark_green</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+<!--        CHANGE PREFERENCE CATEGORY COLOR-->
+        <item name="colorAccent">@color/apple_theme_mid_green</item>
+<!--        CHANGE SUMMARY COLOR-->
+        <item name="android:textColorSecondary">@color/apple_theme_cadet_blue</item>
+
+        <item name="android:fontFamily">@font/vt323</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/apple_theme_mid_blue</item>
+
+
+    </style>
+
+<!--    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">-->
+<!--        <item name="android:titleTextAppearance">@style/ToolbarTitleTextAppearance</item>-->
 <!--    </style>-->
+
+<!--    <style name="ToolbarTitleTextAppearance">-->
+<!--        <item name="android:fontFamily">@font/vt323</item>-->
+<!--        <item name="android:textSize">25sp</item>-->
+<!--    </style>-->
+
 </resources>

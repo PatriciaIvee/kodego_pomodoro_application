@@ -54,22 +54,26 @@ class MainActivity : AppCompatActivity() {
         RUNNING,
         COMPLETED
     }
+//focusTimerCount is supposed to be a var for the completed focus time (HOw many focus time
+    // is completed )
+//    private var focusTimerCount = 0
+//    private var playLongBreak = 0
 
     private lateinit var timer: CountDownTimer
     private var timerLengthSeconds: Long = 0
     private var timerState = TimerState.STOPPED
     private var timerMode = FOCUS
-    //when task is completed it will be moved to completed tasks. Not sure if this is still necessary
+
     private var isTaskCompleted = false
     private var secondsRemaining: Long = 0
-    //focusTimerCount is supposed to be a var for the completed focus time (HOw many focus time
-    // is completed )
-    private var focusTimerCount = 0
-    private var playLongBreak = 0
+
     private var cycles = 0
     var currentCycle = 0
     private var onTaskCompleteListener: OnTaskCompleteListener? = null
-    private var taskStartTime: Long = 0
+    private var focusStartTime: Long = 0
+    private var focusEndTime: Long = 0
+    private val focusStartTimes = ArrayList<Long>()
+    private val focusCompletedTimes = ArrayList<Long>()
 
     private lateinit var binding : ActivityMainBinding
 
@@ -77,8 +81,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        supportActionBar?.title = "      Timer"
+        supportActionBar?.title = "Timer"
 
         setTimerMode(FOCUS, this)
         bindItems()
@@ -137,7 +140,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun initTimer(){
         timerState = PrefUtil.getTimerState(this)
 
@@ -177,23 +179,26 @@ class MainActivity : AppCompatActivity() {
         updateCountdownUI()
     }
 
-    private val completedTimes = ArrayList<Long>()
+
     private fun onTimerFinished(){
 
         timerState = TimerState.STOPPED
         if (timerMode == FOCUS){
-            val focusTimerCompleted = System.currentTimeMillis()
-            completedTimes.add(focusTimerCompleted)
+            focusEndTime = System.currentTimeMillis()
+//            val focusTimerCompleted = System.currentTimeMillis()
+            focusCompletedTimes.add(focusEndTime)
             val formattedTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
-                Locale.getDefault()).format(Date(focusTimerCompleted))
+                Locale.getDefault()).format(Date(focusEndTime))
+
             Log.d("onTimerFinished", "$timerMode end at $formattedTime")
-            Log.d("onTimerFinished", "$timerMode end at $focusTimerCompleted")
-//            Log.d("onTimerFinished", "$timerMode end at $focusTimerCompleted")
+            Log.d("onTimerFinished", "$timerMode end at $focusEndTime")
+
         }
         getTimerMode(this)
         Log.d("onTimerFinished", "$timerMode Finished")
         //set the length of the timer to be the one set in SettingsActivity
         //if the length was changed when the timer was running
+
         switchTimer()
 
         bindItems()
@@ -211,16 +216,17 @@ class MainActivity : AppCompatActivity() {
         updateCountdownUI()
     }
 
-    private val startTimes = ArrayList<Long>()
+
     private fun startTimer(){
         timerState = TimerState.RUNNING
         if (timerMode == FOCUS){
-            val focusTimerStarted = System.currentTimeMillis() // record start time
-            startTimes.add(focusTimerStarted) // add start time to array list
+            focusStartTime = System.currentTimeMillis() // record start time
+            focusStartTimes.add(focusStartTime) // add start time to array list
             val formattedTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
-                Locale.getDefault()).format(Date(focusTimerStarted))
+                Locale.getDefault()).format(Date(focusStartTime))
+
             Log.d("startTimer", "$timerMode start at $formattedTime")
-            Log.d("startTimer", "$timerMode start at $focusTimerStarted")
+            Log.d("startTimer", "$timerMode start at $focusStartTime")
         }
 
 
@@ -350,8 +356,8 @@ class MainActivity : AppCompatActivity() {
 
             //COMPUTE THE TIME COMPLETED
             var totalTimeCompleted = 0L
-            for (i in 0 until completedTimes.size) {
-                val cycleTimeCompleted = completedTimes[i] - startTimes[i]
+            for (i in 0 until focusCompletedTimes.size) {
+                val cycleTimeCompleted = focusCompletedTimes[i] - focusStartTimes[i]
                 totalTimeCompleted += cycleTimeCompleted
 
             }
@@ -374,9 +380,8 @@ class MainActivity : AppCompatActivity() {
             builder.setMessage("time completed $timeCompletedFormatted")
             builder.setMessage("time completed $totalTimeCompleted")
             builder.setMessage("time completed $formattedTime")
+
             builder.setPositiveButton("OK") { dialog, which ->
-
-
 
                 //PUT TIME COMPLETED IN ANOTHER MODULE
                 val taskCompletionEvent = System.currentTimeMillis()
@@ -391,8 +396,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    var textStatus = ""
+    private fun textStatusUpdate(){
+        getTimerMode(this)
+
+        textStatus = when (timerMode){
+            FOCUS ->{
+                "FOCUS TIME"
+            }
+            SHORT_BREAK ->{
+                "SHORT BREAK"
+            }
+            LONG_BREAK ->{
+                "LONG BREAK"
+            }
+
+        }
+    }
+
     private fun bindItems() {
-        val textStatus = getTimerMode(this).toString()
+        textStatusUpdate()
+//        val textStatus = getTimerMode(this).toString()
         binding.textTaskStatus.text = textStatus
 
         val taskName = getTaskName(this).toString()
@@ -427,9 +451,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
+
 
     fun setOnTaskCompleteListener(listener: OnTaskCompleteListener) {
         onTaskCompleteListener = listener

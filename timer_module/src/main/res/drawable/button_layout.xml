@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false" android:color="@color/apple_theme_cadet_blue">
+        <shape>
+            <solid android:color="@color/apple_theme_white"/>
+            <corners android:radius="4dp"/>
+            <stroke android:color="@color/apple_theme_cadet_blue"
+                android:width="3dp"/>
+
+        </shape>
+
+    </item>
+    <item android:state_enabled="true"  android:color="@color/apple_theme_mid_green" >
+        <shape>
+            <solid android:color="@color/apple_theme_white"/>
+            <corners android:radius="4dp"/>
+            <stroke android:color="@color/apple_theme_mid_green"
+                android:width="3dp"/>
+
+        </shape>
+
+    </item>
+
+    <item android:state_activated="true" >
+        <shape>
+            <solid android:color="@color/apple_theme_red"/>
+            <corners android:radius="4dp"/>
+            <stroke android:color="@color/black"
+                android:width="3dp"/>
+
+        </shape>
+    </item>
+
+
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/apple_theme_mid_blue"/>
+            <corners android:radius="4dp"/>
+            <stroke android:color="@color/black"
+                android:width="3dp"/>
+
+        </shape>
+    </item>
+<!--    <item android:drawable="@color/green"/>-->
+</selector>

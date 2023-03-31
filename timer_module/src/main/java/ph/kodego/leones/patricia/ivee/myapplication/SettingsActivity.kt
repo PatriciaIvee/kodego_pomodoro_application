@@ -2,6 +2,7 @@ package ph.kodego.leones.patricia.ivee.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toolbar
 import ph.kodego.leones.patricia.ivee.myapplication.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
@@ -10,5 +11,6 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.title = "Task Settings"
     }
 }
