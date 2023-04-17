@@ -16,8 +16,11 @@
     <color name="apple_theme_mid_green">#6A994E</color>
     <color name="apple_theme_light_green">#A7C957</color>
     <color name="apple_theme_white">#F2E8CF</color>
+    <color name="apple_theme_citrine">#E2CD41</color>
+    <color name="apple_theme_gold">#DC9D28</color>
     <color name="apple_theme_pastel_pink">#D7988C</color>
     <color name="apple_theme_red">#C73D3F</color>
+    <color name="apple_theme_dark_red">#A51C1E</color>
     <color name="apple_theme_really_dark_green">#142317</color>
     <color name="apple_theme_mid_blue">#4269A4</color>
     <color name="apple_theme_cadet_blue">#A0AAB4</color>

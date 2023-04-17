@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity"
+    android:background="@color/apple_theme_white">
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        >-->
+<!--        &lt;!&ndash;        android:theme="@style/AppTheme.AppBarOverlay"&ndash;&gt;-->
+
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="?attr/actionBarSize"-->
+<!--            android:background="@color/apple_theme_red"-->
+<!--            app:title="Task Settings"-->
+
+
+<!--            />-->
+<!--        &lt;!&ndash;        app:titleTextAppearance="@style/ToolbarTitleTextAppearance"&ndash;&gt;-->
+<!--        &lt;!&ndash;        app:popupTheme="@style/AppTheme.PopupOverlay"&ndash;&gt;-->
+
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="ph.kodego.leones.patricia.ivee.pomodoroapplication.SettingsActivityFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

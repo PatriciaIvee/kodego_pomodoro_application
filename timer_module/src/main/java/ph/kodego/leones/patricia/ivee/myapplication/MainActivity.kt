@@ -11,8 +11,17 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import ph.kodego.leones.patricia.ivee.myapplication.MainActivity.TimerMode.*
 import ph.kodego.leones.patricia.ivee.myapplication.databinding.ActivityMainBinding
+import ph.kodego.leones.patricia.ivee.myapplication.model.OnTaskCompleteListener
+import ph.kodego.leones.patricia.ivee.myapplication.receiver.TimerExpiredReceiver
 import ph.kodego.leones.patricia.ivee.myapplication.util.NotificationUtil
 import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil
 import ph.kodego.leones.patricia.ivee.myapplication.util.PrefUtil.Companion.getTaskName
@@ -48,6 +57,12 @@ class MainActivity : AppCompatActivity() {
             get() = Calendar.getInstance().timeInMillis / 1000
     }
 
+    enum class TimerMode{
+        FOCUS,
+        SHORT_BREAK,
+        LONG_BREAK
+    }
+
     enum class TimerState{
         STOPPED,
         PAUSED,
@@ -75,6 +90,8 @@ class MainActivity : AppCompatActivity() {
     private val focusStartTimes = ArrayList<Long>()
     private val focusCompletedTimes = ArrayList<Long>()
 
+    private lateinit var auth: FirebaseAuth
+
     private lateinit var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,6 +99,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         supportActionBar?.title = "Timer"
+
+        auth = Firebase.auth
+        // Initialize Firebase Auth and check if the user is signed in
+        auth = Firebase.auth
+        if (auth.currentUser == null) {
+            // Not signed in, launch the Sign In activity
+            startActivity(Intent(this, SignInActivity::class.java))
+            finish()
+            return
+        }
+
+//        auth = FirebaseAuth.getInstance()
+
+//        // Set welcome message for the signed-in user
+//        val user = auth.currentUser
+//        if (user != null) {
+//            val welcomeMessage = "Welcome, ${user.displayName}!"
+//            binding.welcomeMessage.text = welcomeMessage
+//        }
 
         setTimerMode(FOCUS, this)
         bindItems()
@@ -262,12 +298,49 @@ class MainActivity : AppCompatActivity() {
         binding.progressBarTimer.max = timerLengthSeconds.toInt()
     }
 
+    var textStatus = ""
+    private fun textStatusUpdate(){
+        getTimerMode(this)
+
+        textStatus = when (timerMode){
+            FOCUS ->{
+                "FOCUS TIME"
+            }
+            SHORT_BREAK ->{
+                "SHORT BREAK"
+            }
+            LONG_BREAK ->{
+                "LONG BREAK"
+            }
+
+        }
+    }
+
     private fun updateCountdownUI(){
         val minutesUntilFinished = secondsRemaining / 60
         val secondsInMinuteUntilFinished = secondsRemaining - minutesUntilFinished * 60
         val secondsStr = secondsInMinuteUntilFinished.toString()
         binding.textTimer.text = "$minutesUntilFinished:${if (secondsStr.length == 2) secondsStr else "0" + secondsStr}"
         binding.progressBarTimer.progress = (timerLengthSeconds - secondsRemaining).toInt()
+        when(timerMode){
+            FOCUS->{
+                binding.textViewCycles.setTextColor(getColor(R.color.apple_theme_red))
+                binding.textTaskStatus.setTextColor(getColor(R.color.apple_theme_red))
+                binding.textTimer.setTextColor(getColor(R.color.apple_theme_red))
+            }
+            SHORT_BREAK->{
+                binding.textViewCycles.setTextColor(getColor(R.color.apple_theme_mid_blue))
+                binding.textTaskStatus.setTextColor(getColor(R.color.apple_theme_mid_blue))
+                binding.textTimer.setTextColor(getColor(R.color.apple_theme_mid_blue))
+            }
+            LONG_BREAK->{
+                binding.textViewCycles.setTextColor(getColor(R.color.apple_theme_dark_green))
+                binding.textTaskStatus.setTextColor(getColor(R.color.apple_theme_dark_green))
+                binding.textTimer.setTextColor(getColor(R.color.apple_theme_dark_green))
+            }
+
+        }
+
     }
 
     private fun updateButtons(){
@@ -296,11 +369,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    enum class TimerMode{
-        FOCUS,
-        SHORT_BREAK,
-        LONG_BREAK
-    }
+
     //This is supposed to switch the timer if for example the focus time is finished and now
     //it's either going to be a short break or a long break
 
@@ -396,23 +465,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    var textStatus = ""
-    private fun textStatusUpdate(){
-        getTimerMode(this)
-
-        textStatus = when (timerMode){
-            FOCUS ->{
-                "FOCUS TIME"
-            }
-            SHORT_BREAK ->{
-                "SHORT BREAK"
-            }
-            LONG_BREAK ->{
-                "LONG BREAK"
-            }
-
-        }
-    }
 
     private fun bindItems() {
         textStatusUpdate()
@@ -447,11 +499,39 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+            R.id.action_log_out -> {
+                AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener {
+                        // Successfully signed out
+                        // Start the sign in activity
+                        startActivity(Intent(this, SignInActivity::class.java))
+                        finish()
+                    }
+                false
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    private fun signOut() {
+        FirebaseAuth.getInstance().signOut()
+        val signInIntent = Intent(this, SignInActivity::class.java)
+        startActivity(signInIntent)
+        finish()
+    }
 
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in.
+        if (auth.currentUser == null) {
+            // Not signed in, launch the Sign In activity
+            startActivity(Intent(this, SignInActivity::class.java))
+            finish()
+            return
+        }
+    }
 
     fun setOnTaskCompleteListener(listener: OnTaskCompleteListener) {
         onTaskCompleteListener = listener

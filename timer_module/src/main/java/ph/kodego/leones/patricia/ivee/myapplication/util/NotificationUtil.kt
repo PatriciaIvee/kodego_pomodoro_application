@@ -15,7 +15,7 @@ import androidx.core.app.NotificationCompat
 import ph.kodego.leones.patricia.ivee.myapplication.AppConstants
 import ph.kodego.leones.patricia.ivee.myapplication.MainActivity
 import ph.kodego.leones.patricia.ivee.myapplication.R
-import ph.kodego.leones.patricia.ivee.myapplication.TimerNotificationActionReceiver
+import ph.kodego.leones.patricia.ivee.myapplication.receiver.TimerNotificationActionReceiver
 import java.text.SimpleDateFormat
 import java.util.*
 
